@@ -1,3 +1,6 @@
+# Made by CS169 - Group 18
+# Casey Takeda, Justin Zhong, Peter Lee, Tina Zheng, Wayne Li, Wesley Wan
+
 source 'https://rubygems.org'
 
 git_source(:github) do |repo_name|
@@ -5,11 +8,10 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+ruby '~> 2.4.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
-# Use postgresql as the database for Active Record
-# gem 'pg', '~> 0.18'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
@@ -33,8 +35,13 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# For encyrption on passwords
+gem 'bcrypt', :require => 'bcrypt'
+
+gem 'haml'
+gem 'bootstrap-sass', '~> 3.3.6'
 gem 'react-rails'
-gem 'webpacker', '~> 3.0'
+gem 'devise'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -42,6 +49,17 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
+  gem 'jasmine-rails'
+  gem 'rspec-rails'
+  gem 'simplecov', :require => false
+  gem 'cucumber-rails', :require => false
+  gem 'cucumber-rails-training-wheels'
+  gem 'database_cleaner'
+  gem 'autotest-rails'
+  gem 'factory_girl_rails'
+  gem 'metric_fu'
+  gem 'rails-controller-testing'
+  # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
 end
 
@@ -54,9 +72,9 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-group :production do
-  gem 'pg', '~> 0.18'
-end
-
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+group :production do
+  gem 'pg' # for Heroku deployment
+end
