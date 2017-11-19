@@ -2,12 +2,13 @@ require_relative 'boot'
 
 require 'rails/all'
 
-require 'boxr'
-require 'http'
-
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
+
+Dotenv::Railtie.load
+
+HOSTNAME = ENV['HOSTNAME']
 
 module Hermione
   class Application < Rails::Application

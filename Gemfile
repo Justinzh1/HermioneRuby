@@ -38,6 +38,7 @@ gem 'jbuilder', '~> 2.5'
 # For encyrption on passwords
 gem 'bcrypt', :require => 'bcrypt'
 
+gem 'dotenv-rails'
 gem 'haml'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'react-rails'
