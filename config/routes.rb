@@ -3,4 +3,7 @@ Rails.application.routes.draw do
   resource :home, :only => [:index]
   resource :courses
   root to: 'home#index'
+
+  get 'box', :to => 'box#index', :as => 'box'
+  get 'box/auth', :to => 'box#auth', :as => 'box_auth'
 end
