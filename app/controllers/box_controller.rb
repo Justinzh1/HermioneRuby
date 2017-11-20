@@ -24,7 +24,7 @@ class BoxController < ApplicationController
         end
 
         if !@code.nil?
-            body = "grant_type=authorization_code&code=" + @code + "&client_id=" + ENV['CLIENT_ID'] + "&client_secret=" + ENV['CLIENT_SECRET'] + "&redirect_uri=http://localhost:3000/box" 
+            body = "grant_type=authorization_code&code=" + @code + "&client_id=" + ENV['BOX_CLIENT_ID'] + "&client_secret=" + ENV['BOX_CLIENT_SECRET'] + "&redirect_uri=http://localhost:3000/box" 
             res = HTTP.headers("Content-Type":"application/x-www-form-urlencoded").post('https://api.box.com/oauth2/token', :body => body)
             response = JSON.parse(res.to_s)
             refresh_token = response['refresh_token']
@@ -39,10 +39,10 @@ class BoxController < ApplicationController
             token_refresh_callback = lambda {|access, refresh, identifier| save_box_token(access, refresh)}
             new_client = Boxr::Client.new(access_token,
                           refresh_token: refresh_token,
-                          client_id: ENV['CLIENT_ID'],
-                          client_secret: ENV['CLIENT_SECRET'],
+                          client_id: ENV['BOX_CLIENT_ID'],
+                          client_secret: ENV['BOX_CLIENT_SECRET'],
                           &token_refresh_callback)
-            
+
             if !new_client.nil?
                 $box_client = new_client
                 @client = $box_client
@@ -55,7 +55,7 @@ class BoxController < ApplicationController
         # todo validate state
         res = HTTP.follow.get('https://account.box.com/api/oauth2/authorize', :params => {
                 response_type: 'code',
-                client_id: ENV['CLIENT_ID'],
+                client_id: ENV['BOX_CLIENT_ID'],
                 redirect_uri: "http://localhost:3000/box",
                 state: 'pineapple'
             })
