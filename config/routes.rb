@@ -6,4 +6,7 @@ Rails.application.routes.draw do
 
   get 'box', :to => 'box#index', :as => 'box'
   get 'box/auth', :to => 'box#auth', :as => 'box_auth'
+
+  get 'youtube', :to => 'youtube#index', :as => 'youtube'
+  get 'youtube/auth', :to => 'youtube#auth', :as => 'youtube_auth'
 end
