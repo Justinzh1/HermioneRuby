@@ -1,0 +1,4 @@
+class YoutubeController < ApplicationController
+
+	
+end

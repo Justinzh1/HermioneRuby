@@ -18,7 +18,11 @@ class BoxController < ApplicationController
         expireTime = session[:expiration]
 
         # Existing client is valid
-        if !expireTime.nil? and Time.now < expireTime
+
+        byebug
+        @@client ||= nil
+        if !expireTime.nil? and Time.now < expireTime and !@@client.nil?
+            @client = @@client
         end
 
         if !@code.nil?
@@ -31,6 +35,7 @@ class BoxController < ApplicationController
 
             if refresh_token.nil? or access_token.nil? or expire.nil?
                 render :index
+                return
             end
 
             token_refresh_callback = lambda {|access, refresh, identifier| save_box_token(access, refresh)}
