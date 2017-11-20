@@ -15,14 +15,12 @@ class BoxController < ApplicationController
     def index
         @code = params[:code]
         @state = params[:state]
+        @client = nil
         expireTime = session[:expiration]
 
         # Existing client is valid
-
-        byebug
-        @@client ||= nil
-        if !expireTime.nil? and Time.now < expireTime and !@@client.nil?
-            @client = @@client
+        if !expireTime.nil? and Time.now < expireTime
+            @client = $box_client
         end
 
         if !@code.nil?
@@ -39,11 +37,16 @@ class BoxController < ApplicationController
             end
 
             token_refresh_callback = lambda {|access, refresh, identifier| save_box_token(access, refresh)}
-            @@client = Boxr::Client.new(access_token,
+            new_client = Boxr::Client.new(access_token,
                           refresh_token: refresh_token,
                           client_id: ENV['CLIENT_ID'],
                           client_secret: ENV['CLIENT_SECRET'],
                           &token_refresh_callback)
+            
+            if !new_client.nil?
+                $box_client = new_client
+                @client = $box_client
+            end
             session[:expiration] = Time.now + expire.to_i
         end
     end
