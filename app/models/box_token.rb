@@ -1,0 +1,3 @@
+class BoxToken < ApplicationRecord
+
+end
