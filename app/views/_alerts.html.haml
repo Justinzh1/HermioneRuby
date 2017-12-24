@@ -1,0 +1,12 @@
+- if @success
+	.alert.alert-success
+		%strong
+			= @success
+- if @error
+	.alert.alert-danger
+		%strong
+			= @error
+- else
+	.alert.alert-warning
+		%strong
+			= @flash

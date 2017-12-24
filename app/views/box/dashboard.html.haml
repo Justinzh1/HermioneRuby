@@ -17,5 +17,7 @@
 						- @folder_items[folder.id].take(5).each do |file|
 							.files
 								%p
-									= file.name + " / " + file.id
+									= file.name
+								%p
+									= link_to "Download", box_download_path(file.id)
 

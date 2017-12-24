@@ -1,10 +1,10 @@
 require 'rest-client'
 require 'boxr'
+require 'open-uri'
 
 class BoxController < ApplicationController
 
     def save_box_token(access, refresh)
-        byebug
         BoxToken.create(:token => refresh)
     end
 
@@ -13,7 +13,21 @@ class BoxController < ApplicationController
     end
 
     def download
-        
+       folder = "videos" # temporary 
+
+        client = validate_client 
+        file = client.file_from_id(params[:id])
+        url = client.download_url(file)
+        ext = File.extname(file.name)
+        new_file_path = "#{Rails.root.to_s}/public/#{folder}/#{params[:id]}#{ext}"
+        if not File.file?(new_file_path)
+            open(new_file_path, 'wb') do |file|
+                file << open(url).read
+            end
+            redirect_to box_dashboard_path, :flash => { :success => "File successfully downloaded! "}
+        else
+            redirect_to box_dashboard_path, :flash => { :warning => "File already exists. "}
+        end
     end
 
     def dashboard
