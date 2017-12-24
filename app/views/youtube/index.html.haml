@@ -3,7 +3,7 @@
 
 	= form_for :video, :url => {:controller => 'youtube', :action => 'upload'} do |f|
 
-		.col-xs-4
+		.col-xs-12.col-md-4
 			.row.padding-top
 				= label :video, :title, 'Video Title'
 				= text_field :video, 'title', class: 'form-control'
@@ -18,8 +18,8 @@
 				= label :video, :category_id, 'Category ID'
 				= text_field :video, 'category_id', class: 'form-control'
 			.row.padding-top
+				= label :path, :path, "path"
+				%p.hint For debugging
+				= text_field :path, 'path', class: 'form-control'
+			.row.padding-top
 				= submit_tag 'Create', class: 'btn btn-default'
-
-	.col-xs-12.no-left-padding
-		%br
-		= link_to "Authenticate", youtube_auth_path

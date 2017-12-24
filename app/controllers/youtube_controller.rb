@@ -2,6 +2,14 @@ require 'google/api_client'
 
 class YoutubeController < ApplicationController
 
+    def video_params
+        params.require(:video).permit(:title, :desc, :tags, :category_id)
+    end
+
+    def path_params
+        params.require(:path).permit(:path)
+    end
+
     YOUTUBE_API_SERVICE_NAME = 'youtube'
     YOUTUBE_API_VERSION = 'v3'
     YOUTUBE_UPLOAD_SCOPE = 'https://www.googleapis.com/auth/youtube'
@@ -14,7 +22,7 @@ class YoutubeController < ApplicationController
             :application_version => '1.0.0'
         )
         youtube = client.discovered_api(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION)
-        return youtube
+        return youtube, client
     end
 
     def index
@@ -23,16 +31,16 @@ class YoutubeController < ApplicationController
 
     # Privacy status = ['public', 'private', 'unlisted']
     def upload
-        youtube = auth
+        youtube,client = auth
         # force to unlisted
         begin 
             body = {
-                :snippet => params[:video],
+                :snippet => video_params,
                 :status => {
                     :privacyStatus => 'unlisted'
                 } 
             }        
-
+            byebug
             videos_insert_response = client.execute!(
               :api_method => youtube.videos.insert,
               :body_object => body,
@@ -42,7 +50,7 @@ class YoutubeController < ApplicationController
                 :part => body.keys.join(',')
               }
             )
-            
+
             videos_insert_response.resumable_upload.send_all(client)
 
             puts "Video id '#{videos_insert_response.data.id}' was successfully uploaded."

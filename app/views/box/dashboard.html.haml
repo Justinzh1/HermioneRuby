@@ -1,0 +1,21 @@
+.container
+	%h1 Box API Dashboard
+	%table.table
+		%thead
+			%tr
+				%th Name
+				%th ID
+				%th Files
+		%tbody
+			- @folders.each do |folder|
+				%tr
+					%th 
+						= folder.name
+					%td 
+						= folder.id
+					%td
+						- @folder_items[folder.id].take(5).each do |file|
+							.files
+								%p
+									= file.name + " / " + file.id
+
