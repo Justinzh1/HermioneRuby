@@ -6,7 +6,6 @@ rvm:
 services:
   - postgresql
 before_script:
-  - cp config/database.yml.travis config/database.yml
   - psql -c 'create database Hermione_test;' -U postgres
   - bundle exec rake db:test:prepare
   - bundle exec rake db:seed
