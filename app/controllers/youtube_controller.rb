@@ -1,51 +1,53 @@
-require 'google/apis/youtube_v3'
-require 'googleauth'
-require 'googleauth/web_user_authorizer'
-require "google/apis/storage_v1"
-    
+require 'google/api_client'
+
 class YoutubeController < ApplicationController
-    YT = Google::Apis::YoutubeV3
 
     YOUTUBE_API_SERVICE_NAME = 'youtube'
     YOUTUBE_API_VERSION = 'v3'
+    YOUTUBE_UPLOAD_SCOPE = 'https://www.googleapis.com/auth/youtube'
     ENV_VAR = 'GOOGLE_APPLICATION_CREDENTIALS'
 
-    def get_authorization(path, scope)
-        raise "file #{path} does not exist" unless File.exist?(path)
-        byebug
-        File.open(path) do |f|
-            return Google::Auth::CredentialsLoader.make_creds(json_key_io: f, scope: scope)
-        end
-    end
 
-    def get_service
+    def auth
         client = Google::APIClient.new(
-            :key => ENV['YOUTUBE_DEVELOPER_KEY'],
-            :authorization => nil,
-            :application_name => "Hermione", 
+            :application_name => 'Hermione',
             :application_version => '1.0.0'
-            )
+        )
         youtube = client.discovered_api(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION)
-        return client, youtube
+        return youtube
     end
 
     def index
-        youtube = Google::Apis::YoutubeV3::YouTubeService.new
-        scopes =  [
-            "https://www.googleapis.com/auth/youtube", 
-            "https://www.googleapis.com/auth/youtube.force-ssl", 
-            "https://www.googleapis.com/auth/youtube.upload"
-        ]
-        # authorization = Google::Auth.get_application_default(scopes)
-        # TODO issue with creating authorization
-        # authorization = get_authorization("#{Rails.root}/config/client_secrets.json", scopes)
-    end
-
-    def auth
 
     end
 
+    # Privacy status = ['public', 'private', 'unlisted']
     def upload
+        youtube = auth
+        # force to unlisted
+        begin 
+            body = {
+                :snippet => params[:video],
+                :status => {
+                    :privacyStatus => 'unlisted'
+                } 
+            }        
 
+            videos_insert_response = client.execute!(
+              :api_method => youtube.videos.insert,
+              :body_object => body,
+              :media => Google::APIClient::UploadIO.new(params[:file], 'video/*'),
+              :parameters => {
+                :uploadType => 'resumable',
+                :part => body.keys.join(',')
+              }
+            )
+            
+            videos_insert_response.resumable_upload.send_all(client)
+
+            puts "Video id '#{videos_insert_response.data.id}' was successfully uploaded."
+        rescue Google::APIClient::TransmissionError => e
+            puts e.result.body
+        end
     end
 end

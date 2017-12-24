@@ -20,6 +20,8 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: hermione
+  password: apples
 
 development:
   <<: *default
@@ -29,7 +31,7 @@ development:
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
   # the same name as the operating system user that initialized the database.
-  #username: Hermione
+  #username: hermione
 
   # The password associated with the postgres role (username).
   #password:
@@ -58,6 +60,8 @@ development:
 test:
   <<: *default
   database: Hermione_test
+  username: hermione
+  password: apples
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -81,5 +85,5 @@ test:
 production:
   <<: *default
   database: Hermione_production
-  username: Hermione
+  username: hermione
   password: <%= ENV['HERMIONE_DATABASE_PASSWORD'] %>

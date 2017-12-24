@@ -9,4 +9,5 @@ Rails.application.routes.draw do
 
   get 'youtube', :to => 'youtube#index', :as => 'youtube'
   get 'youtube/auth', :to => 'youtube#auth', :as => 'youtube_auth'
+  post 'youtube/upload', :to => 'youtube#upload', :as => 'youtube_upload'
 end
