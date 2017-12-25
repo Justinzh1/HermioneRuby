@@ -62,7 +62,7 @@ group :development, :test do
   gem 'cucumber-rails-training-wheels'
   gem 'database_cleaner'
   gem 'autotest-rails'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'metric_fu'
   gem 'rails-controller-testing'
   # Use sqlite3 as the database for Active Record

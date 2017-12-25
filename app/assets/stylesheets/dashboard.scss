@@ -4,3 +4,30 @@
 	grid-template-rows: auto;
 	align-items: end;
 }
+
+.upload-form-grid {
+	display: grid;
+	grid-gap: 10px;
+	grid-template-columns: 200px 200px;
+	grid-template-rows: auto;
+	align-items: end;	
+	grid-template-areas: 	"c1 c2"
+							"v1 v2"
+							"v3 v4"
+							"desc desc"
+							"tags tags";
+}
+
+
+.form-grid > c {
+	outline: 2px #CCC solid;
+}
+
+.upload-form-grid {
+	.desc {
+		grid-area: desc;
+	}
+	.tags {
+		grid-area: tags;
+	}
+}

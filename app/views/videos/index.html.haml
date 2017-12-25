@@ -1,0 +1,39 @@
+- content_for :head do
+	= stylesheet_link_tag 'dashboard'
+
+- content_for :body do
+	.container
+		%h1 Video Processing Dashboard
+		.no-left-padding
+			%p This current form is used to simulate the type of requests that the backend would usually process in the automated pipeline. Ideally, Plugging in SD card into Raspberry Pi triggers upload to Box via a script, followed by sending a request to the Hermione backend which creates the models and uploads it to Youtube.
+		= form_for :video, :course => {:controller => 'videos', :action => 'process/upload'} do |f|
+			.form-container
+				.upload-form-grid
+					.c1
+						= label :course, :code, 'Course Code'
+						= text_field :course, 'code', class: 'form-control inline-block'
+					.c2
+						= label :course, :year, 'Year'
+						= text_field :course, 'year', class: 'form-control inline-block'
+					.v1
+						= label :video, :box_video_id, 'Box Video ID'
+						= text_field :video, 'box_video_id', class: 'form-control inline-block'
+					.v2
+						= label :video, :box_video_path, 'Box Video Path'
+						= text_field :video, 'box_video_path', class: 'form-control inline-block'
+					.v3
+						= label :video, :title, 'Video Title'
+						= text_field :video, 'title', class: 'form-control inline-block'
+					.v4
+						= label :video, :category_id, 'Category ID'
+						= text_field :video, 'category_id', class: 'form-control inline-block'
+					.desc
+						= label :video, :description, 'Description'
+						= text_area :video, 'description', class: 'form-control inline-block'
+					.tags
+						= label :video, :tags, 'Tags'
+						= text_field :video, 'tags', class: 'form-control inline-block'
+									
+				.col-xs-12.col-md-12.no-left-padding
+					%br
+					= submit_tag 'Upload', class: 'btn btn-default inline-block'

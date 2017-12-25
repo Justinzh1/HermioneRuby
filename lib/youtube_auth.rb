@@ -37,9 +37,7 @@ module YoutubeAuth
     # use videos for testing purposes
     def upload_video_youtube(video_params,file_name,upload_folder="videos")
 		youtube,client = get_authentication
-
-		file_name = params[:path][:path]
-		folder_path = "#{Rails.root.to_s}/public/#{upload_folder}/"
+		folder_path = "#{Rails.root.to_s}/public#{upload_folder}"
         path = folder_path + file_name
 
     	body = {
