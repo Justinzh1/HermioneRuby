@@ -1,25 +1,26 @@
-.container
-	%h1 YouTube API
+- content_for :body do
+	.container
+		%h1 YouTube API
 
-	= form_for :video, :url => {:controller => 'youtube', :action => 'upload'} do |f|
+		= form_for :video, :url => {:controller => 'youtube', :action => 'upload'} do |f|
 
-		.col-xs-12.col-md-4
-			.row.padding-top
-				= label :video, :title, 'Video Title'
-				= text_field :video, 'title', class: 'form-control'
-			.row.padding-top
-				= label :video, :desc, 'Description'
-				= text_area :video, 'desc', class: 'form-control'
-			.row.padding-top
-				= label :video, :tags, 'Tags'
-				%p.hint Separated by commas (eg. math,linear algebra)
-				= text_field :video, 'tags', class: 'form-control'
-			.row.padding-top
-				= label :video, :category_id, 'Category ID'
-				= text_field :video, 'category_id', class: 'form-control'
-			.row.padding-top
-				= label :path, :path, "path"
-				%p.hint For debugging
-				= text_field :path, 'path', class: 'form-control'
-			.row.padding-top
-				= submit_tag 'Create', class: 'btn btn-default'
+			.col-xs-12.col-md-4
+				.row.padding-top
+					= label :video, :title, 'Video Title'
+					= text_field :video, 'title', class: 'form-control'
+				.row.padding-top
+					= label :video, :desc, 'Description'
+					= text_area :video, 'desc', class: 'form-control'
+				.row.padding-top
+					= label :video, :tags, 'Tags'
+					%p.hint Separated by commas (eg. math,linear algebra)
+					= text_field :video, 'tags', class: 'form-control'
+				.row.padding-top
+					= label :video, :category_id, 'Category ID'
+					= text_field :video, 'category_id', class: 'form-control'
+				.row.padding-top
+					= label :path, :path, "path"
+					%p.hint For debugging
+					= text_field :path, 'path', class: 'form-control'
+				.row.padding-top
+					= submit_tag 'Create', class: 'btn btn-default'

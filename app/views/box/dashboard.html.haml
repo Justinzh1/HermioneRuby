@@ -1,23 +1,37 @@
-.container
-	%h1 Box API Dashboard
-	%table.table
-		%thead
-			%tr
-				%th Name
-				%th ID
-				%th Files
-		%tbody
-			- @folders.each do |folder|
-				%tr
-					%th 
-						= folder.name
-					%td 
-						= folder.id
-					%td
-						- @folder_items[folder.id].take(5).each do |file|
-							.files
-								%p
-									= file.name
-								%p
-									= link_to "Download", box_download_path(file.id)
+- content_for :head do
+	= stylesheet_link_tag 'dashboard'
 
+- content_for :body do
+	.container
+		%h1 Box API Dashboard
+		= form_for :video, :url => {:controller => 'box', :action => 'upload'} do |f|
+			.form-container
+				.form-grid
+					.col-xs-12.col-md-12.no-left-padding
+						= label :url, :path, 'File name'
+						= text_field :url, 'path', class: 'form-control inline-block'
+					.col-xs-12.col-md-12.no-left-padding
+						= label :url, :folder_id, 'Folder ID'
+						= text_field :url, 'folder_id', class: 'form-control inline-block'
+					.col-xs-12.col-md-12.no-left-padding
+						= submit_tag 'Upload', class: 'btn btn-default inline-block'
+		%table.table
+			%thead
+				%tr
+					%th Name
+					%th ID
+					%th Files
+			%tbody
+				- @folders.each do |folder|
+					%tr
+						%th 
+							= folder.name
+						%td 
+							= folder.id
+						%td
+							- @folder_items[folder.id].take(5).each do |file|
+								.files
+									%p
+										= file.name
+									%p
+										= link_to "Download", box_download_path(file.id)

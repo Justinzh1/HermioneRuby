@@ -3,6 +3,13 @@ require 'boxr'
 require 'open-uri'
 
 class BoxController < ApplicationController
+    before_action :require_client, only: [:validate_client]
+
+    def require_client
+        unless $client
+            redirect_to box_auth_path
+        end
+    end
 
     def save_box_token(access, refresh)
         BoxToken.create(:token => refresh)
@@ -12,8 +19,37 @@ class BoxController < ApplicationController
 
     end
 
+    def upload
+        placeholder = "videos" # temporary
+        url = params[:url][:path]
+        folder_id = params[:url][:folder_id]
+        client = validate_client 
+
+        folder = client.folder_from_id(folder_id)
+        if not folder
+            redirect_to box_dashboard_path, :flash => { :warning => "Invalid folder."}
+        end
+        upload_file_path = "#{Rails.root.to_s}/public/#{placeholder}/#{url}"
+        if File.file?(upload_file_path)
+            status = nil
+            begin 
+                status = client.upload_file(upload_file_path, folder)
+                file_id = status.id
+                file = File.read(upload_file_path)
+                file_ext = File.extname(status.name)
+                new_name = "#{Rails.root.to_s}/public/#{placeholder}/#{file_id + file_ext}"
+                File.rename(upload_file_path, new_name)
+            rescue Boxr::BoxrError
+                redirect_to box_dashboard_path, :flash => { :error => "Upload failed."}
+            end
+            redirect_to box_dashboard_path, :flash => { :success => "Successfully uploaded file!"}
+        else
+            redirect_to box_dashboard_path, :flash => { :warning => "Invalid file."}
+        end
+    end
+
     def download
-       folder = "videos" # temporary 
+        folder = "videos" # temporary 
 
         client = validate_client 
         file = client.file_from_id(params[:id])
@@ -87,6 +123,9 @@ class BoxController < ApplicationController
         @code = params[:code]
         @state = params[:state]
         @client = validate_client
+        if @client
+            redirect_to box_dashboard_path
+        end
     end
 
     def auth 
