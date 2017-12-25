@@ -5,6 +5,7 @@ rvm:
   - 2.4.0
 services:
   - postgresql
+dist: precise
 before_script:
   - psql -c "CREATE USER herm WITH PASSWORD ' ';" -U postgres
   - psql -c 'create database Hermione_test;' -U postgres
