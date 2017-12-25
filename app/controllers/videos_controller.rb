@@ -16,9 +16,15 @@ class VideosController < ApplicationController
 	# Assumes video already exists on box
 	def upload
 		course = Course.find_by :year => course_params[:year], :code => course_params[:code]
-		video = course.videos.build(video_params)
+		box_video_id ||= params[:video][:box_video_id]
+		box_video_path ||= params[:video][:box_video_path]
+		# fix this
+		video_params[:tags] = video_params[:tags].split(',').map { |tag| 
+			tag.downcase
+		}
 		byebug
-		status, message = Pipeline::find_and_upload_to_yt(params[:box_video_id], course, video)
+		video = course.videos.create!(video_params)
+		status, message = find_and_upload_to_yt(box_video_id, box_video_path, course, video)
 		if status == 1
 			redirect_to process_path, :flash => { :success => message }
 		else

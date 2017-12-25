@@ -18,7 +18,6 @@ module BoxAuth
           * https://www.speedshop.co/2015/07/29/scaling-ruby-apps-to-1000-rpm.html
     """
 
-
     """
         upload_video_box
             @upload_file_path: local path of file
@@ -43,38 +42,63 @@ module BoxAuth
         return status
 	end
 
-    """  TODO 
-         Unfinished and uneeded?
-         Uploading videos to box should be handled by another server
-    """
-    def find_or_make_dir(upload_file_path, course)
+    def download_video_box_by_id(box_video_id)
+        file = client.file_from_id(box_video_id)
+        return download_file(file)         
+    end
+
+    def download_video_box_by_path(file_path)
+        file = client.file_from_path(file_path)
+        return download_file(file)
+    end
+
+    def download_file(file)
+        url = client.download_url(file)
+        ext = File.extname(file.name)
+        new_folder_path = "#{Rails.root.to_s}/public/#{abbrev}/#{year}/"
+        new_file_path = new_folder_path + "#{file.name + ext}"
+
+        dirname = File.dirname(new_folder_path)
+        unless File.diretory?(dirname)
+            fileutils.mkdir_p(dirname)
+        end
+
+        if not File.file?(new_file_path)
+            open(new_file_path, 'wb') do |file|
+                file << open(url).read
+            end
+            return file, "File successfully downloaded!"
+        else
+            return nil, "File already exits."
+        end
+    end
+
+    def find_box_video(file_path, id)
+        if file_path
+            find_by_path(file_path)
+        elsif id
+            find_by_id(id)
+        else
+            return nil
+        end
+    end
+
+    def find_by_path(file_path)
         client = get_box_client
-        course_abbrev = course.course
-        folder_path = "/#{course_abbrev}"
-
-        # Check if folder exists
-        folder = client.folder_from_path(folder_path)
-        if folder.nil?
-            # Create folder
-            parent = folder_from_path("/") 
-            client.create_folder(course_abbrev, parent)
-        end
-
-        # Check if year specific folder exists
-        year_folder_path = folder_path + "/#{course.year}"
-        year_folder = client.folder_from_path(year_folder_path)
-        if year_folder.nil?
-            # Create folder
-            client.create_folder_from_path(year_folder_path, folder)
-        end
+        file = client.find_from_path(file_path)
     end 
+
+    def find_by_id(id)
+        client = get_box_client
+        file = client.find_from_id(id)
+    end
 
     def get_box_client
         expireTime = session[:expiration]
         client = nil
 
         # Existing client is valid
-        if !expireTime.nil? and Time.now < expireTime
+        if !expireTime.nil? and Time.now < expireTime and $box_client
             client = $box_client
             return client
         end
@@ -99,7 +123,6 @@ module BoxAuth
             render :index
             return
         end
-
         token_refresh_callback = lambda {|access, refresh, identifier| save_box_token(access, refresh)}
         new_client = Boxr::Client.new(access_token,
                       refresh_token: refresh_token,
@@ -107,6 +130,7 @@ module BoxAuth
                       client_secret: ENV['BOX_CLIENT_SECRET'],
                       &token_refresh_callback)
 
+        # byebug
         if !new_client.nil?
             $box_client = new_client
             @client = $box_client

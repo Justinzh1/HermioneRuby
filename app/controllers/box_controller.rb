@@ -52,7 +52,7 @@ class BoxController < ApplicationController
 
         client = get_box_client 
         file = client.file_from_id(params[:id])
-        url = client.download_url(file)
+        url = box_client.download_url(file)
         ext = File.extname(file.name)
         new_file_path = "#{Rails.root.to_s}/public/#{folder}/#{params[:id]}#{ext}"
         if not File.file?(new_file_path)
