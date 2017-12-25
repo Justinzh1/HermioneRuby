@@ -20,12 +20,12 @@ module Pipeline
 		# Strip params
 		video_params.slice(:title, :description, :tags, :category_id)
 
-		begin
-			upload_video_youtube(video_params, video.get_local_path, video.get_folder)
-			return 1, "Video successfully uploaded!"
-		rescue => error
-			return 0, "Upload failed. \n #{error.to_s[0..50]}"
-		end
+		# begin
+		upload_video_youtube(video_params, video.get_local_path, video.get_folder)
+		return 1, "Video successfully uploaded!"
+		# rescue => error
+			# return 0, "Upload failed. \n #{error.to_s[0..100]}"
+		# end
 	end
 
 	def download_from_box(id, path, course, video)

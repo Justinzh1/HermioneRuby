@@ -17,6 +17,7 @@ module YoutubeAuth
             :application_name => 'Hermione',
             :application_version => '1.0.0'
         )
+        byebug
         youtube = client.discovered_api(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION)
         file_storage = Google::APIClient::FileStorage.new("#{ENV['PROGRAM_NAME']}-oauth2.json")
         if file_storage.authorization.nil?

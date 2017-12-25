@@ -29,7 +29,6 @@ class BoxController < ApplicationController
             return
         end
         upload_file_path = "#{Rails.root.to_s}/public/#{placeholder}/#{url}"
-        byebug
         if File.file?(upload_file_path)
             status = nil
             begin 
@@ -38,7 +37,6 @@ class BoxController < ApplicationController
                 redirect_to box_dashboard_path, :flash => { :error => "Upload failed."}
                 return
             end
-            byebug
             redirect_to box_dashboard_path, :flash => { :success => "Successfully uploaded file!"}
             return
         else
