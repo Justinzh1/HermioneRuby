@@ -38,16 +38,23 @@ gem 'jbuilder', '~> 2.5'
 # For encyrption on passwords
 gem 'bcrypt', :require => 'bcrypt'
 
+# Dot files
 gem 'dotenv-rails'
+
+# Front end
 gem 'haml'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'react-rails'
+
+# Users
 gem 'devise'
+
+# APIs
 gem 'boxr'
 gem 'http'
 gem 'google-api-client', '0.8.2', require: 'google/api_client'
-gem 'trollop', '~> 2.1', '>= 2.1.2'
 gem 'faraday', '~> 0.9.2'
+gem 'rest-client'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
