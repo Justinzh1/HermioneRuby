@@ -5,9 +5,9 @@ rvm:
   - 2.4.0
 services:
   - postgresql
-dist: precise
 before_script:
   - psql -c "CREATE USER herm WITH PASSWORD ' ';" -U postgres
+  - psql -U postgres -c "ALTER USER herm CREATEDB;"
   - psql -c 'create database Hermione_test;' -U postgres
   - bundle exec rake db:test:prepare
   - bundle exec rake db:seed
