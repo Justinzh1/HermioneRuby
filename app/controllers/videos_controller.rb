@@ -22,9 +22,8 @@ class VideosController < ApplicationController
 		video_params[:tags] = video_params[:tags].split(',').map { |tag| 
 			tag.downcase
 		}
-		byebug
-		video = course.videos.create!(video_params)
-		status, message = find_and_upload_to_yt(box_video_id, box_video_path, course, video)
+		video = course.videos.build(video_params)
+		status, message = find_and_upload_to_yt(box_video_id, box_video_path, course, video, video_params)
 		if status == 1
 			redirect_to process_path, :flash => { :success => message }
 		else

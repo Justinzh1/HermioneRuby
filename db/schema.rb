@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171225102847) do
+ActiveRecord::Schema.define(version: 20171225192712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,8 @@ ActiveRecord::Schema.define(version: 20171225102847) do
     t.integer "category_id"
     t.string "privacyStatus"
     t.integer "course_id"
+    t.string "box_id"
+    t.string "path"
   end
 
 end
