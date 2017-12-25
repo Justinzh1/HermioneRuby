@@ -12,4 +12,7 @@ Rails.application.routes.draw do
 
   get 'youtube', :to => 'youtube#index', :as => 'youtube'
   post 'youtube/upload', :to => 'youtube#upload', :as => 'youtube_upload'
+
+  get 'process', :to => 'videos#index', :as => 'process'
+  get 'process/upload', :to => 'videos#upload', :as => 'process_upload'
 end

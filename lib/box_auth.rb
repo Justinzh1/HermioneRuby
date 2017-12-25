@@ -4,7 +4,27 @@ require 'open-uri'
 
 module BoxAuth
 
-    # Uploads video and renames it 
+    """ TODO: Upgrade to Chunked Uploads when Ruby is supported
+        https://developer.box.com/v2.0/reference#chunked-upload
+
+        TODO: Batched jobs when uploading multiple videos?
+        - Potential solution is to use rocketjob
+        - http://rocketjob.io/guide.html
+
+        TODO: Scaling and dealing with concurrent Uploads
+        - Puma
+        - Phusion Passenger 5
+          * May already be included in heroku?
+          * https://www.speedshop.co/2015/07/29/scaling-ruby-apps-to-1000-rpm.html
+    """
+
+
+    """
+        upload_video_box
+            @upload_file_path: local path of file
+            @folder: folder obj to upload into on box
+            @upload_folder: folder which file is located in: assets/public/___
+    """
 	def upload_video_box(upload_file_path, folder, upload_folder="videos")
         # Upload file
         client = get_box_client
@@ -23,15 +43,43 @@ module BoxAuth
         return status
 	end
 
+    """  TODO 
+         Unfinished and uneeded?
+         Uploading videos to box should be handled by another server
+    """
+    def find_or_make_dir(upload_file_path, course)
+        client = get_box_client
+        course_abbrev = course.course
+        folder_path = "/#{course_abbrev}"
+
+        # Check if folder exists
+        folder = client.folder_from_path(folder_path)
+        if folder.nil?
+            # Create folder
+            parent = folder_from_path("/") 
+            client.create_folder(course_abbrev, parent)
+        end
+
+        # Check if year specific folder exists
+        year_folder_path = folder_path + "/#{course.year}"
+        year_folder = client.folder_from_path(year_folder_path)
+        if year_folder.nil?
+            # Create folder
+            client.create_folder_from_path(year_folder_path, folder)
+        end
+    end 
 
     def get_box_client
         expireTime = session[:expiration]
         client = nil
+
         # Existing client is valid
         if !expireTime.nil? and Time.now < expireTime
             client = $box_client
+            return client
         end
 
+        # Fetch client 
         if !@code.nil?
             client = get_token 
         end
