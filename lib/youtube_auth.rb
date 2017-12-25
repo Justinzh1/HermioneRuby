@@ -35,7 +35,7 @@ module YoutubeAuth
     end
 
     # use videos for testing purposes
-    def upload_video(video_params,file_name,upload_folder="videos")
+    def upload_video_youtube(video_params,file_name,upload_folder="videos")
 		youtube,client = get_authentication
 
 		file_name = params[:path][:path]
@@ -57,7 +57,7 @@ module YoutubeAuth
             :part => body.keys.join(',')
           }
         )
-
         videos_insert_response.resumable_upload.send_all(client)
+        puts "Video id '#{videos_insert_response.data.id}' was successfully uploaded."
     end
 end

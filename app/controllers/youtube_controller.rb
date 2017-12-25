@@ -16,8 +16,7 @@ class YoutubeController < ApplicationController
     def upload
         file_name = path_params[:path]
         begin 
-            upload_video(video_params,file_name) 
-            puts "Video id '#{videos_insert_response.data.id}' was successfully uploaded."
+            upload_video_youtube(video_params,file_name) 
             redirect_to youtube_path, :flash => { :success => "Video successfully uploaded! "}
         rescue Google::APIClient::TransmissionError => e
             puts e.result.body

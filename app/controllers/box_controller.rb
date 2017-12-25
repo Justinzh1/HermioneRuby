@@ -3,8 +3,10 @@ require 'boxr'
 require 'open-uri'
 
 class BoxController < ApplicationController
-    before_action :require_client, only: [:validate_client]
+    include BoxAuth
+    before_action :require_client, only: [:get_box_client]
 
+    # BUG: Navigating to box/dashboard before authentication
     def require_client
         unless $client
             redirect_to box_auth_path
@@ -15,43 +17,40 @@ class BoxController < ApplicationController
         BoxToken.create(:token => refresh)
     end
 
-    def trigger_upload
-
-    end
-
     def upload
         placeholder = "videos" # temporary
         url = params[:url][:path]
         folder_id = params[:url][:folder_id]
-        client = validate_client 
+        client = get_box_client 
 
         folder = client.folder_from_id(folder_id)
         if not folder
             redirect_to box_dashboard_path, :flash => { :warning => "Invalid folder."}
+            return
         end
         upload_file_path = "#{Rails.root.to_s}/public/#{placeholder}/#{url}"
+        byebug
         if File.file?(upload_file_path)
             status = nil
             begin 
-                status = client.upload_file(upload_file_path, folder)
-                file_id = status.id
-                file = File.read(upload_file_path)
-                file_ext = File.extname(status.name)
-                new_name = "#{Rails.root.to_s}/public/#{placeholder}/#{file_id + file_ext}"
-                File.rename(upload_file_path, new_name)
+                status = upload_video_box(upload_file_path, folder)
             rescue Boxr::BoxrError
                 redirect_to box_dashboard_path, :flash => { :error => "Upload failed."}
+                return
             end
+            byebug
             redirect_to box_dashboard_path, :flash => { :success => "Successfully uploaded file!"}
+            return
         else
             redirect_to box_dashboard_path, :flash => { :warning => "Invalid file."}
+            return
         end
     end
 
     def download
         folder = "videos" # temporary 
 
-        client = validate_client 
+        client = get_box_client 
         file = client.file_from_id(params[:id])
         url = client.download_url(file)
         ext = File.extname(file.name)
@@ -67,7 +66,7 @@ class BoxController < ApplicationController
     end
 
     def dashboard
-        client = validate_client 
+        client = get_box_client 
         @client_id = client.client_id
         @folders = client.root_folder_items
         @folder_items = {}
@@ -76,60 +75,16 @@ class BoxController < ApplicationController
         end
     end
 
-    def validate_client
-        expireTime = session[:expiration]
-        client = nil
-        # Existing client is valid
-        if !expireTime.nil? and Time.now < expireTime
-            client = $box_client
-        end
-
-        if !@code.nil?
-            client = set_token
-        end
-
-        return client
-    end
-
-    def set_token
-        body = "grant_type=authorization_code&code=" + @code + "&client_id=" + ENV['BOX_CLIENT_ID'] + "&client_secret=" + ENV['BOX_CLIENT_SECRET'] + "&redirect_uri=http://localhost:3000/box" 
-        res = HTTP.headers("Content-Type":"application/x-www-form-urlencoded").post('https://api.box.com/oauth2/token', :body => body)
-        response = JSON.parse(res.to_s)
-        refresh_token = response['refresh_token']
-        access_token = response['access_token']
-        expire = response['expires_in']
-
-        if refresh_token.nil? or access_token.nil? or expire.nil?
-            render :index
-            return
-        end
-
-        token_refresh_callback = lambda {|access, refresh, identifier| save_box_token(access, refresh)}
-        new_client = Boxr::Client.new(access_token,
-                      refresh_token: refresh_token,
-                      client_id: ENV['BOX_CLIENT_ID'],
-                      client_secret: ENV['BOX_CLIENT_SECRET'],
-                      &token_refresh_callback)
-
-        if !new_client.nil?
-            $box_client = new_client
-            @client = $box_client
-        end
-        session[:expiration] = Time.now + expire.to_i 
-        return @client
-    end
-
     def index
         @code = params[:code]
         @state = params[:state]
-        @client = validate_client
+        @client = get_box_client
         if @client
             redirect_to box_dashboard_path
         end
     end
 
     def auth 
-        # todo validate state
         res = HTTP.follow.get('https://account.box.com/api/oauth2/authorize', :params => {
                 response_type: 'code',
                 client_id: ENV['BOX_CLIENT_ID'],
