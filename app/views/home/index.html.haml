@@ -1,6 +1,7 @@
-.container
-	%h1 Welcome to Hermione
+- content_for :body do
+	.container
+		%h1 Welcome to Hermione
 
-	= link_to "Box", box_path
-	%br 
-	= link_to 'YouTube', youtube_path
+		= link_to "Box", box_path
+		%br 
+		= link_to 'YouTube', youtube_path

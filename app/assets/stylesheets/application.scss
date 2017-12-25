@@ -16,3 +16,19 @@
 @import url('https://rsms.me/inter/inter-ui.css');
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+.no-left-padding {
+	padding-left: 0;
+}
+
+.padding-top {
+	padding-top: 20px;
+}
+
+.inline-block {
+	display: inline-block;
+}
+
+.hint {
+	color: #888;
+}

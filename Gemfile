@@ -45,6 +45,9 @@ gem 'react-rails'
 gem 'devise'
 gem 'boxr'
 gem 'http'
+gem 'google-api-client', '0.8.2', require: 'google/api_client'
+gem 'trollop', '~> 2.1', '>= 2.1.2'
+gem 'faraday', '~> 0.9.2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

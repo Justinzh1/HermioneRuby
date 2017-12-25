@@ -20,3 +20,10 @@
 /public/packs
 /public/packs-test
 /node_modules
+
+public/videos/
+videos/.*
+
+.env
+client_secrets.json
+Hermione-oauth2.json
