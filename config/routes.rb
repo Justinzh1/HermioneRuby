@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   get 'box', :to => 'box#index', :as => 'box'
-  get 'box/auth', :to => 'box#auth', :as => 'box_auth'
+  # get 'box/auth', :to => 'box#auth', :as => 'box_auth'
   get 'box/dashboard', :to => 'box#dashboard', :as => 'box_dashboard'
   get 'box/download/:id', :to => 'box#download', :as => 'box_download'
   post 'box/upload', :to => 'box#upload', :as => 'box_upload'

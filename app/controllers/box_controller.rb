@@ -1,6 +1,7 @@
 require 'rest-client'
 require 'boxr'
 require 'open-uri'
+require 'json'
 
 class BoxController < ApplicationController
     include BoxAuth
@@ -64,7 +65,7 @@ class BoxController < ApplicationController
     end
 
     def dashboard
-        client = get_box_client 
+        client = get_service_account
         @client_id = client.client_id
         @folders = client.root_folder_items
         @folder_items = {}
@@ -76,19 +77,19 @@ class BoxController < ApplicationController
     def index
         @code = params[:code]
         @state = params[:state]
-        @client = get_box_client
+        @client = get_service_account
         if @client
             redirect_to box_dashboard_path
         end
     end
 
-    def auth 
-        res = HTTP.follow.get('https://account.box.com/api/oauth2/authorize', :params => {
-                response_type: 'code',
-                client_id: ENV['BOX_CLIENT_ID'],
-                redirect_uri: "http://localhost:3000/box",
-                state: 'pineapple'
-            })
-        redirect_to res.uri.to_s
-    end
+    # def auth 
+        # res = HTTP.follow.get('https://account.box.com/api/oauth2/authorize', :params => {
+        #         response_type: 'code',
+        #         client_id: ENV['BOX_CLIENT_ID'],
+        #         redirect_uri: "http://localhost:3000/box",
+        #         state: 'pineapple'
+        #     })
+        # redirect_to res.uri.to_s
+    # end
 end

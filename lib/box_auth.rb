@@ -104,9 +104,11 @@ module BoxAuth
         end
 
         # Fetch client 
-        if !@code.nil?
-            client = get_token 
-        end
+        # if !@code.nil?
+        #     client = get_token 
+        # end
+
+        # New Fetch Client
 
         return client
     end
@@ -137,6 +139,18 @@ module BoxAuth
         end
         session[:expiration] = Time.now + expire.to_i 
         return @client
+    end
+
+    # Switch to using Service Accounts instead
+
+    def get_jwt
+        jwt = File.read(ENV['JWT_TOKEN'])
+        jwt_token = JSON.parse(jwt)
+    end
+
+    def get_service_account
+        client = Boxr::Client.new
+        return client
     end
 
 end 
