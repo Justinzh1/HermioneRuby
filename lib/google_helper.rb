@@ -8,7 +8,6 @@ YT_SCOPE = 'https://www.googleapis.com/auth/youtube'
 module GoogleHelper
 
     def get_drive
-      byebug
       if !defined? @@drive
         auth = authorize(DRIVE_SCOPE)
         drive = Google::Apis::DriveV3::DriveService.new
@@ -39,7 +38,6 @@ module GoogleHelper
     def create_folder(path, drive, course, lecture, parent=nil)
       # file_metadata = {name: name, mime_type: "application/vnd.google-apps.folder"}
       # file = drive.create_file(file_metadata, fields: 'id')
-      byebug
       if path.empty?
         return 
       end
