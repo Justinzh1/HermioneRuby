@@ -1,7 +1,13 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   resource :home, :only => [:index]
-  resource :courses
+  resource :courses do
+    resources :semesters do
+      resources :lectures do
+        resources :videos 
+      end
+    end
+  end
   post 'courses/create', :to => 'courses#create', :as => 'course_create'
   get 'courses', :to => 'courses#index', :as => 'courses_all'
 
