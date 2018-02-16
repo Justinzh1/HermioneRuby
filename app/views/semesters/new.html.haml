@@ -1,0 +1,12 @@
+- content_for :body do
+	.container
+		%h1 New Instance
+		= form_for @course, course_semester_create do |f|
+			.form-container
+				.form-grid
+					.col-xs-12.col-md-12.no-left-padding
+						= label :semester, :year, 'Year (Case sensitive eg. SP18)'
+						= text_field :semester, 'year', class: 'form-control inline-block'
+					%br
+					.col-xs-12.col-md-12.no-left-padding
+						= submit_tag 'Create', class: 'btn btn-default inline-block'

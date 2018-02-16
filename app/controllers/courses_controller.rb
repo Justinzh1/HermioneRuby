@@ -5,6 +5,10 @@ class CoursesController < ApplicationController
         params.require(:course).permit(:title, :code, :year, :abbrev, :description)
     end
 
+    def course_semester_params
+    	params.require(:semester).permit(:year)
+    end
+
 	def new
 	end
 
@@ -40,4 +44,10 @@ class CoursesController < ApplicationController
 		end
 		redirect_to root_path
 	end
+
+	def new_semester
+		@course = Course.find(params[:id])
+		render :new_semester
+	end
+	
 end

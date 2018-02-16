@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180216044559) do
+ActiveRecord::Schema.define(version: 20180216063514) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,8 @@ ActiveRecord::Schema.define(version: 20180216044559) do
     t.datetime "updated_at", null: false
     t.string "folder_id"
     t.string "year"
+    t.bigint "course_id"
+    t.index ["course_id"], name: "index_semesters_on_course_id"
   end
 
   create_table "users", force: :cascade do |t|

@@ -1,0 +1,13 @@
+- content_for :body do
+	.container
+		%h1="New semester of " + @course.abbrev
+		= form_for @course, :url => {:controller => "courses", :action => "create_semester"} do |course| 
+			.form-container
+				.form-grid
+					.col-xs-8.col-md-8.no-left-padding
+						= label :semester, :year, 'Year (Case sensitive eg. SP18)'
+						= text_field :semester, 'year', class: 'form-control inline-block'
+					%br
+					= hidden_field(:course, :id, :value => @course.id)
+					.col-xs-8.col-md-8.no-left-padding
+						= submit_tag 'Create', class: 'btn btn-default inline-block'

@@ -4,4 +4,9 @@
 		- @courses.each do |course|
 			.well
 				%h4=course.abbrev
-				%p=course.title
+				%h5=course.title
+				%p Semesters
+				- course.semesters.each do |semester|
+					%p
+						= link_to semester.year, courses_semester_path(semester.id)
+				= link_to "new", course_new_semester_path(course.id)

@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   end
   post 'courses/create', :to => 'courses#create', :as => 'course_create'
   get 'courses', :to => 'courses#index', :as => 'courses_all'
+  get 'courses/:id/new' => 'courses#new_semester', :as => 'course_new_semester'
+
+  post 'courses/semesters/create', :to => 'courses#create_semester', :as => 'course_semester_create'
 
   root to: 'home#index'
 
