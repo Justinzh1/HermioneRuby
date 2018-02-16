@@ -1,5 +1,5 @@
 class Video < ApplicationRecord
-	belongs_to :course
+	belongs_to :semester
 	include YoutubeAuth
 
 	def get_folder

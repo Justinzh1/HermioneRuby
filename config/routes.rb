@@ -3,11 +3,10 @@ Rails.application.routes.draw do
   resource :home, :only => [:index]
   resource :courses do
     resources :semesters do
-      resources :lectures do
-        resources :videos 
-      end
+      resources :videos 
     end
   end
+
   post 'courses/create', :to => 'courses#create', :as => 'course_create'
   get 'courses', :to => 'courses#index', :as => 'courses_all'
   get 'courses/:id/new' => 'courses#new_semester', :as => 'course_new_semester'

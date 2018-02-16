@@ -1,3 +1,6 @@
 - content_for :body do
 	.container	
 		%h1=@course.title + " " + @semester.year
+	.container
+		%h3 Test Upload Video
+		= link_to "new", new_courses_semester_video_path(@semester.id)

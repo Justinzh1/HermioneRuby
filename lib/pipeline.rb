@@ -1,7 +1,6 @@
 require 'fileutils'
 
 module Pipeline
-	include BoxAuth
 	include YoutubeAuth
 
 	""" find_and_upload_to_yt

@@ -23,4 +23,5 @@ class SemestersController < ApplicationController
 		@semester = Semester.find(params[:id])
 		@course = @semester.course
 	end
+
 end

@@ -28,6 +28,10 @@ class CoursesController < ApplicationController
 
 	end
 
+	def detail
+		@course = Course.find(params[:id])
+	end
+
 	def index
 		@courses = Course.all
 	end
@@ -49,5 +53,5 @@ class CoursesController < ApplicationController
 		@course = Course.find(params[:id])
 		render :new_semester
 	end
-	
+
 end
