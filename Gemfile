@@ -52,9 +52,11 @@ gem 'devise'
 # APIs
 gem 'boxr'
 gem 'http'
-gem 'google-api-client', '0.8.2', require: 'google/api_client'
+gem 'google-api-client', '0.9.0'
+gem 'googleauth'
 gem 'faraday', '~> 0.9.2'
 gem 'rest-client'
+gem 'google_drive', '2.1.2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

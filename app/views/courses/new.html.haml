@@ -1,0 +1,24 @@
+- content_for :body do
+	.container
+		%h1 New Course
+		= form_for :course, url: course_create_path do |f|
+			.form-container
+				.form-grid
+					.col-xs-12.col-md-12.no-left-padding
+						= label :course, :title, 'Course Title'
+						= text_field :course, 'title', class: 'form-control inline-block'
+					.col-xs-12.col-md-12.no-left-padding
+						= label :course, :code, 'Code'
+						= text_field :course, 'code', class: 'form-control inline-block'
+					.col-xs-12.col-md-12.no-left-padding
+						= label :course, :year, 'Year'
+						= text_field :course, 'year', class: 'form-control inline-block'
+					.col-xs-12.col-md-12.no-left-padding
+						= label :course, :abbrev, 'Abbreviation'
+						= text_field :course, 'abbrev', class: 'form-control inline-block'
+					.col-xs-12.col-md-12.no-left-padding
+						= label :course, :description, 'Description'
+						= text_area :course, 'description', class: 'form-control inline-block'
+					%br
+					.col-xs-12.col-md-12.no-left-padding
+						= submit_tag 'Create', class: 'btn btn-default inline-block'

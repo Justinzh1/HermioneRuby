@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "hermione-193900",
+  "private_key_id": "b5f7799e8b6203bbb10ca3d5e8416c1a092b4cec",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDLtvNP5Wm3mESJ\nUpy6kSZK94j6sr7rwRZCNlY1JA6P9FXdXDGPio/6JAc1h14GEc7UPfql5PeMDOE9\n0bFvw/XtQw2RCv5fZzg3tE6ZNjwxVZDJK7QZy9yaXPI9vPEOjgYS5v/WCSZa2O++\ngztEFKpTKmvHQGR3K1D/z70vri43EduBRj0M8XgUrWSS99JgTItGNvQ64UF0Degw\nzrdAANJVmiUzxI12xHuMAk5zKGDro2YuyEWdAqB/B3CfTkBLNQd0PvVyeUxkfmHP\ntnwXutLomTyVAxrjOAKrkd3URwNAQQECDRulT3fFPJq5iXVRKFB/W5Zk9seksP65\n8Z6fiCWfAgMBAAECggEASrcAeTKueeA2btkmU4Tt8vvjuPL69BOe2sz8BESDtMeM\nAIKSSM+sq7UwEbFiyj4Yyh4rQlH+eta0e8xfVBsepRT9Mk/CaPI+G6wdUbMjE4MK\n9cV6KiXrdJAXZo5YKRrs3lzrwzAa6aH8GDcgcwFTUOpTmkIjNtPjwtcJz6WGHLrf\njp6B3Gw/Lko/TQjrpAK1LUwZVF9Th8aHyqOb2H+xWJPqCRvEy5JN7PVwZHQFUNO4\n8N8npuk8ZFldLAFY5ez7caftRCe/xKwhJQHkpYFLbm1DUtOoqb2r8gpNzXZyXgY1\nEhCnet/bxX2Y6g95LKtyaaOZ02gWwC1p24+b3xrL8QKBgQD0RDJdGHu4DQQRBBxB\nZ1AU4tTS89L3hC9N3eJsewQqi+Le5o4O2mVgM+J8tTvfKM8LOG0/kMRmgYCxuCY/\nQMCnPFEtRqm2KzM+UG+iLott6XE57UgncMk34dKWH1WvejnqLWV3220Fk8ESzQsZ\n9SMRvCavOVj2tmEE3Hjtg18xEQKBgQDVgBQ8ten3iNIIEeCc3VV3Z8CdQTDqHnQ8\nYo27ZwG8wtwMqpZuAMyOb4vOVbsymmJKkJ8K51s612qPHEEEiV9HVma1StSI5qGI\nKfivj3SfjPW7bz7mVP8kK308+/ksUbaPWpOnWdPOMZMQbd8Q4nBS+ItHWBKLKYRA\n5LQXGLvrrwKBgQC4koN/5w0tUOB+vx1eqmNPtOreEBGcqExaSUxbbkUCpTsj9RDo\n1kv9+pasZwG7qYlxUAz1GD3fuwF0yNJVv2cTtzcbwCZjGZeaAYupAASpY9kDzXFV\nJBtX15KZj0ne07vJYM4oWCy0JyagP0GhNqNuNj8A7pNzsPH0i2fxCPC4EQKBgQC0\nYr62fMzthABRKSmp36fydwra0tXNOWXkDzDJAcMKBWl+mjL3Rl2OitiIwQ6lNqON\ndJurzsXZ9V/nAmw8tQR3dZzZ2Buyf4pDTZL8YiybEbIdZ2Sxn2bi3Iu4Fvz0YSXq\nARF3+AFo2aHz46Dw1yEoOS8UXGlugulnGtS+HvvHqQKBgDhzuEAZPhx9apvO0Y4N\nBOA4YKM9omyaOIxptonhBSzbo5o4mV739fEYFFXLXWb9+Qvf3AKcwCSPwOUIllbM\nGiEtuVvo49+WbPi0i5fnVPbPLSZTF4Fo99qdx5nLADICCie0tuUL1FNj30BRcsSz\nLUfC0KuII026ZWWEZAGI30I8\n-----END PRIVATE KEY-----\n",
+  "client_email": "hermione-automation@hermione-193900.iam.gserviceaccount.com",
+  "client_id": "100882044890251457781",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/hermione-automation%40hermione-193900.iam.gserviceaccount.com"
+}
