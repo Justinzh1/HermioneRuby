@@ -1,7 +1,11 @@
 class CoursesController < ApplicationController
+	include GoogleHelper
+
+	def course_params
+        params.require(:course).permit(:title, :code, :year, :abbrev, :description)
+    end
 
 	def new
-
 	end
 
 	def edit
@@ -9,7 +13,7 @@ class CoursesController < ApplicationController
 	end
 
 	def show
-
+		@courses = Course.all
 	end
 
 	def update
@@ -20,7 +24,20 @@ class CoursesController < ApplicationController
 
 	end
 
-	def create
+	def index
+		@courses = Course.all
+	end
 
+	# create new course
+	def create
+		found = Course.find_by_title_and_year(params[:course][:title], params[:course][:year])
+
+		# Handle redirects and flashing
+		if found.nil?
+			c = Course.create!(course_params)
+			byebug
+			upload_to_drive(c)
+		end
+		redirect_to root_path
 	end
 end

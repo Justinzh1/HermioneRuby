@@ -1,4 +1,3 @@
 class Course < ApplicationRecord
-	has_many :videos
-	has_many :professors
+	has_many :semesters
 end

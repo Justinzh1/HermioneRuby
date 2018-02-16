@@ -14,8 +14,7 @@ ee = Course.create!({
 	year: 'FA17'
 })
 
-prof = ee.professors.build({:name => "Anant Sahai"})
-prof.save!
+
 
 # eeb Course.create!({
 # 	title: "Designing Information Devices and Systems I",

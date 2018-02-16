@@ -98,16 +98,20 @@ module BoxAuth
         client = nil
 
         # Existing client is valid
-        if !expireTime.nil? and Time.now < expireTime and $box_client
-            client = $box_client
-            return client
-        end
+        # if !expireTime.nil? and Time.now < expireTime and $box_client
+        #     client = $box_client
+        #     return client
+        # end
 
         # Fetch client 
-        if !@code.nil?
-            client = get_token 
-        end
+        # if !@code.nil?
+        #     client = get_token 
+        # end
 
+        # New Fetch Client
+
+        # New implementation
+        client = get_service_account
         return client
     end
 
@@ -137,6 +141,44 @@ module BoxAuth
         end
         session[:expiration] = Time.now + expire.to_i 
         return @client
+    end
+
+    # Switch to using Service Accounts instead
+
+    def get_jwt
+        jwt = File.read(ENV['JWT_TOKEN'])
+        jwt_token = JSON.parse(jwt)
+    end
+
+
+    # Need to examine if developer access token is still needed 
+    def get_service_account
+        client = Boxr::Client.new
+    end
+
+    def get_folder_path(file)
+        if !file.nil?
+            folders = file.path_collection['entries']
+            path = []
+            folders.drop(1).each do |f|
+                path.append(f.name)
+            end
+            date = /([0-9]{4}-[0-9]{1,}-[0-9]{1,})/.match(file.created_at).captures[0].gsub! '-', ''
+            path.append(date)
+            path.join('/')
+        end
+    end
+
+    def get_file_path(file)
+        if !file.nil?
+            path = "#{get_folder_path(file)}/#{file.id}#{File.extname(file.name)}"
+        end
+    end
+
+    def check_path(path)
+        unless File.diretory?(path)
+            fileutils.mkdir_p(path)
+        end
     end
 
 end 

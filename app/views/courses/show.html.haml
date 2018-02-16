@@ -1,0 +1,7 @@
+- content_for :body do
+	.container
+		%h1 Courses
+		- @courses.each do |course|
+			.well
+				%h4=course.abbrev
+				%p=course.title
