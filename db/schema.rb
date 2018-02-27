@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180216063514) do
+ActiveRecord::Schema.define(version: 20180227003150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,7 +53,9 @@ ActiveRecord::Schema.define(version: 20180216063514) do
     t.string "folder_id"
     t.string "year"
     t.bigint "course_id"
+    t.bigint "videos_id"
     t.index ["course_id"], name: "index_semesters_on_course_id"
+    t.index ["videos_id"], name: "index_semesters_on_videos_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -76,8 +78,10 @@ ActiveRecord::Schema.define(version: 20180216063514) do
     t.integer "category_id"
     t.string "privacyStatus"
     t.integer "course_id"
-    t.string "box_id"
     t.string "path"
+    t.bigint "semester_id"
+    t.integer "number"
+    t.index ["semester_id"], name: "index_videos_on_semester_id"
   end
 
 end

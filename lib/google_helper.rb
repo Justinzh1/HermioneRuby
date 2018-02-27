@@ -4,6 +4,7 @@ require 'google/apis/youtube_v3'
 
 DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive'
 YT_SCOPE = 'https://www.googleapis.com/auth/youtube'
+FILE_TYPE = 'txt'
 
 module GoogleHelper
 
@@ -26,20 +27,32 @@ module GoogleHelper
       return yt
     end
 
-    def upload_to_drive(course, lecture=nil)
-      # Generate folders
+    def upload_to_drive(semester, video=nil, local_path=nil)
       drive = get_drive
-      lecture_num = if !lecture.nil? then lecture.number else nil end
-
-      # Check for errors
-      create_folder([course.abbrev.upcase,course.year.upcase,lecture_num].compact, drive, course, lecture)
+      video_num = if !video.nil? then video.number else nil end
+      path = [semester.course.abbrev.upcase,semester.year.upcase,video_num].compact
+        # create_video(path, drive, semester, video)
+        # Generate folders and TODO check for errors
+      create_folder(path, drive, semester, video, nil, local_path)
     end
 
-    def create_folder(path, drive, course, lecture, parent=nil)
+    def create_video(path, ext, drive, semester, video, local_path=nil)
+      folder = drive.get_file(semester.folder_id)
+      file_metadata = { name: path, fields: 'id', parents: [{id:folder.id}], upload_source: '#{Rails.root.to_s}/#{local_path}', content_type: FILE_TYPE}
+      file = drive.create_file(file_metadata, fields: 'id')
+    end
+
+    def create_folder(path, drive, semester, video, parent=nil, local_path=nil)
       # file_metadata = {name: name, mime_type: "application/vnd.google-apps.folder"}
       # file = drive.create_file(file_metadata, fields: 'id')
       if path.empty?
         return 
+      end
+
+      if semester.folder_id and video and local_path
+        ext = File.extname(local_path)
+        create_video(path[-1], ext, drive, semester, video, local_path)
+        return
       end
 
       filename = path[0]
@@ -48,23 +61,19 @@ module GoogleHelper
       if parent.nil? and ext.empty?
         file_metadata = { name: filename, mime_type: "application/vnd.google-apps.folder"}
         file = drive.create_file(file_metadata, fields: 'id')
-        course.folder_id = file.id
-        course.save!
-        path.slice!(0)
-        create_folder(path, drive, course, lecture, file)
+        semester.folder_id = file.id
+        semester.save!
       elsif ext.empty?
-        byebug
         file_metadata = { name: filename, parents: [{id:parent.id}], mime_type: "application/vnd.google-apps.folder"}
         file = drive.create_file(file_metadata, fields: 'id')
-        path.slice!(0)
-        create_folder(path, drive, course, lecture, file)
+      else
+        create_video(path, ext, drive, semester, video, local_path)
       end
-
+      path.slice!(0)
+      create_folder(path, drive, semester, video, file, local_path)
     end
 
     def authorize(scope)
-      # scopes =  [ 'https://www.googleapis.com/auth/drive',
-                  # 'https://www.googleapis.com/auth/youtube']
       authorization = Google::Auth.get_application_default(scope)
     end
 

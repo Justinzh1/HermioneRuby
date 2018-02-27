@@ -4,3 +4,9 @@
 	.container
 		%h3 Test Upload Video
 		= link_to "new", new_courses_semester_video_path(@semester.id)
+		%h3 Videos
+		- @videos.each do |video|
+			.well
+				%h5=video.title
+				%p=video.description
+				%p=video.created_at

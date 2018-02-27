@@ -1,15 +1,16 @@
 class VideosController < ApplicationController	
+	include GoogleHelper
 
 	def video_params 
-		params.require(:video).permit(:title, :description, :category_id, :tags, :category_id)
+		params.require(:video).permit(:title, :description, :category_id, :tags, :category_id, :number)
 	end
 
 	def course_params
 		params.require(:course).permit(:year, :code)
 	end
 
-	def index
-
+	def drive_params
+		params.require(:drive).permit(:file_path)
 	end
 
 	# Assumes video already exists on box
@@ -36,7 +37,9 @@ class VideosController < ApplicationController
 	end
 
 	def create
-		byebug
-		# Create video object
+		semester = Semester.find(params[:semester_id])
+		video = semester.videos.new(video_params)
+		upload_to_drive(semester, video, drive_params[:file_path])
+		redirect_to new_courses_semester_video(semester.id), :flash => { :success => "File successfully uploaded! "}
 	end
 end
