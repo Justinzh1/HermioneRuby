@@ -36,6 +36,7 @@ class VideosController < ApplicationController
 	# 	end
 	# end
 
+	# TODO: Youtube does not accept service accounts, need to use oauth on octo account
 	def upload
 		drive = get_drive
 		semester = Semester.find semester_params[:id]
@@ -50,7 +51,7 @@ class VideosController < ApplicationController
 	end
 
 	def edit
-		
+
 	end
 
 	def new
