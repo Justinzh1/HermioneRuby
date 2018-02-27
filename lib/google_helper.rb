@@ -20,11 +20,41 @@ module GoogleHelper
     end
 
     def get_yt
-      auth = authorize(YT_SCOPE)
-      yt = Google::Apis::YoutubeV3::YouTubeService.new
-      yt.client_options.application_name = "Hermione"
-      yt.authorization = auth
-      return yt
+      if !defined? @@yt
+        auth = authorize(YT_SCOPE)
+        yt = Google::Apis::YoutubeV3::YouTubeService.new
+        yt.client_options.application_name = "Hermione"
+        yt.authorization = auth
+        @@yt = yt
+      return @@yt
+    end
+
+    def check_path(path)
+        unless File.diretory?(path)
+            fileutils.mkdir_p(path)
+        end
+    end
+
+    def download(video)
+        drive = get_drive
+        parent_path = video.get_local_parent_folder
+
+        # Ensure local directory exists
+        unless File.directory?(parent_path)
+            fileutils.mkdir_p(parent_path)
+        end
+
+        # Downloads file
+        f = drive.get_file(video.folder_id, download_dest: parent_path)
+
+        # Return file
+        file = nil
+        if not File.directory?(video.get_local_folder)
+            open(file_path, 'wb') do |file|
+                file << open(url).read
+            end
+        end
+        return file
     end
 
     def upload_to_drive(semester, video=nil, local_path=nil)
@@ -40,6 +70,9 @@ module GoogleHelper
       folder = drive.get_file(semester.folder_id)
       file_metadata = { name: path, fields: 'id', parents: [{id:folder.id}], upload_source: '#{Rails.root.to_s}/#{local_path}', content_type: FILE_TYPE}
       file = drive.create_file(file_metadata, fields: 'id')
+      byebug
+      video.folder_id = file.id
+      video.save!
     end
 
     def create_folder(path, drive, semester, video, parent=nil, local_path=nil)
